@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Formulaire Alpha Gym</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Helvetica Neue', sans-serif;
+      background: url('background.jpg') no-repeat center center fixed;
+      background-size: cover;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .container {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(15px);
+      padding: 0;
+      border-radius: 20px;
+      width: 90%;
+      max-width: 500px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      transition: height 0.3s ease;
+    }
+    .progress {
+      height: 8px;
+      background: rgba(255, 255, 255, 0.1);
+      overflow: hidden;
+    }
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, rgba(0,255,153,0.5), rgba(0,255,204,0.8));
+      backdrop-filter: blur(10px);
+      transition: width 0.4s ease;
+    }
+    .form-content {
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+    }
+    .question {
+      display: none;
+      flex-direction: column;
+      opacity: 0;
+      transform: translateX(50px);
+      transition: all 0.4s ease-in-out;
+    }
+    .question.active {
+      display: flex;
+      opacity: 1;
+      transform: translateX(0);
+    }
+    label {
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+    .name-fields {
+      display: flex;
+      gap: 10px;
+    }
+    input[type="text"], input[type="number"], input[type="tel"], input[type="email"], select, textarea {
+      padding: 12px;
+      border-radius: 12px;
+      border: none;
+      width: 100%;
+      margin: 0 auto 20px auto;
+      font-size: 16px;
+      display: block;
+      box-sizing: border-box;
+    }
+    .button-container {
+      margin: 0 -40px -40px -40px;
+      display: flex;
+    }
+    .button-container button {
+      flex: 1;
+      border: none;
+      padding: 16px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      background-color: white;
+      color: black;
+    }
+    .button-container button:first-child {
+      border-bottom-left-radius: 20px;
+    }
+    .button-container button:last-child {
+      border-left: 1px solid black;
+      border-bottom-right-radius: 20px;
+    }
+    #summary {
+      white-space: pre-wrap;
+      font-size: 0.95em;
+      margin-top: 20px;
+    }
+    textarea {
+      resize: vertical;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="progress">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
+    <form id="formulaire" class="form-content" novalidate>
+
+      <div class="question active">
+        <h2>Découvre comment obtenir ton programme gratuit 💪</h2>
+        <p>Remplis ce formulaire pour découvrir nos programmes personnalisés et commencer ton parcours vers une meilleure santé.<br><br><br></p>
+        <div class="button-container">
+          <button type="button" onclick="suivant()">Commencer</button>
+        </div>
+      </div>
+
+      <div class="question">
+        <label>Quel est ton prénom et nom ?</label>
+        <div class="name-fields">
+          <input type="text" name="prenom" placeholder="Prénom" required>
+          <input type="text" name="nom" placeholder="Nom" required>
+        </div>
+        <div class="button-container">
+          <button type="button" onclick="precedent()">Précédent</button>
+          <button type="button" onclick="suivant()">Suivant</button>
+        </div>
+      </div>
+
+      <div class="question">
+        <label>Comment te sens-tu en général ?</label>
+        <select name="ressenti" required>
+          <option value="">Sélectionne une option</option>
+          <option>Souvent fatigué(e)</option>
+          <option>Douleurs au dos</option>
+          <option>Pas assez d'énergie</option>
+          <option>Manque de motivation</option>
+          <option>Stressé(e)</option>
+          <option>Plutôt bien !</option>
+        </select>
+        <div class="button-container">
+          <button type="button" onclick="precedent()">Précédent</button>
+          <button type="button" onclick="suivant()">Suivant</button>
+        </div>
+      </div>
+
+      <div class="question">
+        <label>Quels sont tes objectifs ?</label>
+        <textarea name="objectifs" placeholder="Perte de poids, tonification, plus d'énergie..." required></textarea>
+        <div class="button-container">
+          <button type="button" onclick="precedent()">Précédent</button>
+          <button type="button" onclick="suivant()">Suivant</button>
+        </div>
+      </div>
+
+      <div class="question">
+        <label>Tu recherches plutôt :</label>
+        <select name="type" required>
+          <option value="">Sélectionne une option</option>
+          <option>Coaching personnalisé</option>
+          <option>Suivi</option>
+          <option>Accompagnement</option>
+          <option>Les trois</option>
+          <option>Je ne sais pas encore</option>
+        </select>
+        <div class="button-container">
+          <button type="button" onclick="precedent()">Précédent</button>
+          <button type="button" onclick="suivant()">Suivant</button>
+        </div>
+      </div>
+
+      <div class="question">
+        <label>As-tu déjà été inscrit(e) en salle ?</label>
+        <select name="experience" required>
+          <option value="">Sélectionne une option</option>
+          <option>Oui</option>
+          <option>Non</option>
+        </select>
+        <div class="button-container">
+          <button type="button" onclick="precedent()">Précédent</button>
+          <button type="button" onclick="suivant()">Suivant</button>
+        </div>
+      </div>
+
+      <div class="question">
+        <label>Qu’est-ce qui t’empêche aujourd’hui d’atteindre tes objectifs ?</label>
+        <textarea name="freins" required></textarea>
+        <div class="button-container">
+          <button type="button" onclick="precedent()">Précédent</button>
+          <button type="button" onclick="suivant()">Suivant</button>
+        </div>
+      </div>
+
+      <div class="question">
+        <label>Quel âge as-tu ?</label>
+        <input type="number" name="age" required>
+        <div class="button-container">
+          <button type="button" onclick="precedent()">Précédent</button>
+          <button type="button" onclick="suivant()">Suivant</button>
+        </div>
+      </div>
+
+      <div class="question">
+        <label>Quel est ton numéro de téléphone ?</label>
+        <input type="tel" name="telephone" pattern="^\d{10}$" placeholder="Ex: 0612345678" required>
+        <div class="button-container">
+          <button type="button" onclick="precedent()">Précédent</button>
+          <button type="button" onclick="suivant()">Suivant</button>
+        </div>
+      </div>
+
+      <div class="question">
+        <label>Quelle est ton adresse email ?</label>
+        <input type="email" name="email" placeholder="exemple@domaine.com" required>
+        <div class="button-container">
+          <button type="button" onclick="precedent()">Précédent</button>
+          <button type="button" onclick="suivant()">Suivant</button>
+        </div>
+      </div>
+
+      <div class="question">
+        <label>Une dernière chose à nous dire ?</label>
+        <textarea name="commentaire"></textarea>
+        <div class="button-container">
+          <button type="button" onclick="precedent()">Précédent</button>
+          <button type="button" onclick="terminer()">Envoyer</button>
+        </div>
+      </div>
+
+      <div class="question" id="final">
+        <h3>Merci pour ton envoi 🙏</h3>
+        <p>Un de nos coachs spécialisés te contactera sous peu pour t'aider à devenir la meilleure version de toi-même et obtenir ton programme pour 0€.</p>
+        <div id="summary"></div>
+      </div>
+
+    </form>
+  </div>
+
+  <script>
+    const questions = document.querySelectorAll('.question');
+    const progressBar = document.getElementById('progressBar');
+    let index = 0;
+
+    window.addEventListener('beforeunload', function (e) {
+      if (index > 0 && index < questions.length - 1) {
+        e.preventDefault();
+        e.returnValue = 'Êtes-vous sûr de vouloir quitter ? Vous perdrez toutes vos réponses.';
+      }
+    });
+
+    function updateProgress() {
+      const pourcentage = (index / (questions.length - 1)) * 100;
+      progressBar.style.width = `${pourcentage}%`;
+    }
+
+    function suivant() {
+      const currentQuestion = questions[index];
+      const inputs = currentQuestion.querySelectorAll('input, select, textarea');
+      let valid = true;
+
+      inputs.forEach(input => {
+        if (!input.checkValidity()) {
+          input.reportValidity();
+          valid = false;
+        }
+      });
+
+      if (!valid) return;
+
+      questions[index].classList.remove('active');
+      index++;
+      questions[index].classList.add('active');
+      updateProgress();
+    }
+
+    function precedent() {
+      if (index === 0) return;
+      questions[index].classList.remove('active');
+      index--;
+      questions[index].classList.add('active');
+      updateProgress();
+    }
+
+    function terminer() {
+      const currentQuestion = questions[index];
+      const inputs = currentQuestion.querySelectorAll('input, select, textarea');
+      let valid = true;
+
+      inputs.forEach(input => {
+        if (!input.checkValidity()) {
+          input.reportValidity();
+          valid = false;
+        }
+      });
+
+      if (!valid) return;
+
+      const form = document.forms['formulaire'];
+      const data = new FormData(form);
+      let resume = '';
+      for (let [key, value] of data.entries()) {
+        resume += `${key} : ${value}\n`;
+      }
+      document.getElementById('summary').textContent = resume;
+      questions[index].classList.remove('active');
+      index++;
+      questions[index].classList.add('active');
+      updateProgress();
+
+      fetch('https://formspree.io/f/mwpbvqoj', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json'
+        },
+        body: data
+      }).then(response => console.log('Form envoyé')).catch(err => console.error(err));
+    }
+
+    updateProgress();
+  </script>
+</body>
+</html>
